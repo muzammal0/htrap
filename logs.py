@@ -26,11 +26,12 @@ def read():
 
 
 if __name__ == "__main__":
-    current_time = time.ctime()
-    volts = read()
-    print(volts)
-    f = open("logs.txt", "a+")
-    f.write(current_time + " "+str(volts)+"\n")
-    f.close()
-    time.sleep(1)
+    while(True):
+        current_time = time.ctime()
+        volts = read()
+        print(volts)
+        f = open("logs.txt", "a+")
+        f.write(current_time + " "+str(volts)+"\n")
+        f.close()
+        time.sleep(1)
 
