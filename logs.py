@@ -33,5 +33,5 @@ if __name__ == "__main__":
         f = open("logs.txt", "a+")
         f.write(current_time + " "+str(volts)+"\n")
         f.close()
-        time.sleep(1)
+        time.sleep(900)
 
