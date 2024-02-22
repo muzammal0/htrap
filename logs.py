@@ -5,13 +5,13 @@ from time import sleep
 import time
 from urllib.request import urlopen
 
-SHUNT_OHMS = 0.1
+SHUNT_OHMS = 0.0013
 
 volts = 0
 
 
 def read():
-    ina = INA219(SHUNT_OHMS)
+    ina = INA219(SHUNT_OHMS,busnum=1,address=0x40)
     ina.configure()
     volts = ina.voltage()
     print("Bus Voltage: %.3f V" % ina.voltage())

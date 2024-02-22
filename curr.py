@@ -3,11 +3,11 @@ from ina219 import INA219
 from ina219 import DeviceRangeError
 from time import sleep
 from urllib.request import urlopen
-SHUNT_OHMS = 0.1
-
+SHUNT_OHMS = 0.0013
+MAX_EXPECTED_AMPS = 4
 volts = 0
 def read():
-    ina = INA219(SHUNT_OHMS)
+    ina = INA219(SHUNT_OHMS,MAX_EXPECTED_AMPS,busnum=1,address=0x40)
     ina.configure()
     volts = ina.voltage()
     print("Bus Voltage: %.3f V" % ina.voltage())
