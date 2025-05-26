@@ -1,29 +1,25 @@
-#!/usr/bin/env python
-from ina219 import INA219
-from ina219 import DeviceRangeError
-from time import sleep
-from urllib.request import urlopen
-SHUNT_OHMS = 0.0013
-MAX_EXPECTED_AMPS = 4
-volts = 0
-def read():
-    ina = INA219(SHUNT_OHMS,MAX_EXPECTED_AMPS,busnum=1,address=0x40)
-    ina.configure()
-    volts = ina.voltage()
-    print("Bus Voltage: %.3f V" % ina.voltage())
-    try:
-        print("Bus Current: %.3f mA" % ina.current())
-        print("Power: %.3f mW" % ina.power())
-        print("Shunt voltage: %.3f mV" % ina.shunt_voltage())
-        return volts
-    except DeviceRangeError as e:
-        # Current out of device range with specified shunt resistor
-        print(e)
+import time
+import board
+import busio
+from adafruit_ina219 import INA219
 
+# Create I2C bus
+i2c_bus = busio.I2C(board.SCL, board.SDA)
 
-if __name__ == "__main__":
+# Create INA219 instance (no need to call configure)
+ina = INA219(i2c_bus)
 
-     volts = read()
-     sleep(1)
-     print(volts)
-    
+# Read loop
+while True:
+    bus_voltage = ina.bus_voltage            # Voltage on V- (load side)
+    shunt_voltage = ina.shunt_voltage        # Voltage across the shunt resistor
+    current = ina.current                    # Current in milliamps
+    power = ina.power                        # Power in milliwatts
+
+    print(f"Bus Voltage:    {bus_voltage:.3f} V")
+    print(f"Shunt Voltage:  {shunt_voltage:.3f} V")
+    print(f"Current:        {current:.3f} mA")
+    print(f"Power:          {power:.3f} mW")
+    print("")
+
+    time.sleep(1)
